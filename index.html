@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1769aa"><meta name="description" content="نقطة: منظومة لتنظيم المواد الدراسية وفهم الدروس وحل الأسئلة خطوة بخطوة.">
+<link rel="manifest" href="/manifest.json"><title>نُقطة | منظّم المادة</title>
+<style>
+:root{--blue:#1769aa;--blue2:#eaf4ff;--navy:#12365a;--ink:#21364b;--muted:#667b90;--line:#dbe8f5;--bg:#f5f9fd;--white:#fff;--green:#1b8065;--red:#a72d35}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+header{background:linear-gradient(120deg,#145c9b,#3187ca);color:#fff;padding:18px max(16px,calc((100% - 1050px)/2));display:flex;align-items:center;gap:12px}
+.logo{width:50px;height:50px;border-radius:16px;background:#ffffff24;display:grid;place-items:center;font-size:29px;font-weight:800;border:1px solid #ffffff50;flex-shrink:0}
+header h1{margin:0;font-size:24px}header p{margin:0;color:#e1efff;font-size:13px}
+main{max-width:1050px;margin:20px auto;padding:0 14px 44px}.hero,.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:15px;box-shadow:0 8px 28px #1e5a8a08}
+.hero h2,.panel h2{font-size:21px;margin:0 0 5px;color:var(--navy)}.muted{color:var(--muted);margin:0 0 13px;font-size:14px}
+.topline{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.subjectSelect{width:auto;min-width:150px;max-width:100%;font:inherit;border:1px solid #cbdced;border-radius:12px;padding:9px;background:white}
+.nav{display:flex;gap:8px;overflow-x:auto;padding:2px 0 12px;margin-bottom:6px}.nav button{white-space:nowrap;border:1px solid var(--line);background:white;color:var(--navy);border-radius:12px;padding:10px 14px;font:inherit;cursor:pointer}.nav button.active{background:var(--blue);border-color:var(--blue);color:white}
+label{display:block;font-weight:650;margin:13px 0 6px}.field,textarea,select,input[type=file]{width:100%;font:inherit;border:1px solid #cbdced;border-radius:12px;padding:11px;background:#fbfdff;color:var(--ink)}textarea{min-height:90px;resize:vertical}
+button.primary{background:var(--blue);color:white;border:0;border-radius:12px;padding:11px 17px;font:inherit;font-weight:700;cursor:pointer;margin-top:12px}button.secondary{background:white;color:var(--blue);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font:inherit;cursor:pointer;margin-top:10px}button:disabled{opacity:.55;cursor:wait}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.tile{background:#fbfdff;border:1px solid var(--line);border-radius:15px;padding:15px}.tile .num{font-size:25px;color:var(--blue);font-weight:800}.tile h3{margin:4px 0;color:var(--navy);font-size:16px}.tile p{margin:0;color:var(--muted);font-size:13px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.notice{margin-top:12px;background:#f0f7ff;border:1px solid var(--line);padding:12px;border-radius:12px;color:#375b7b;font-size:13px}
+.status{display:none;margin-top:14px;border:1px solid var(--line);padding:13px;border-radius:12px;background:#f9fcff;white-space:pre-wrap;overflow-wrap:anywhere}.status.show{display:block}.status.error{border-color:#efb8b8;background:#fff5f5;color:#8a2525}
+.answer{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.95}.sources{color:var(--muted);font-size:12px;border-top:1px solid var(--line);margin-top:14px;padding-top:10px}
+.lesson-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}.lesson{border:1px solid var(--line);border-radius:12px;padding:10px;background:#fbfdff;text-align:right;cursor:pointer;color:var(--ink);font:inherit}.lesson:hover{border-color:var(--blue);background:var(--blue2)}.lesson.done{border-color:#8acbb8;background:#f0fbf7}
+.small{color:var(--muted);font-size:12px}.hidden{display:none!important}.progressbar{height:8px;background:#e5eef7;border-radius:99px;overflow:hidden;margin:10px 0}.progressbar div{height:100%;width:0;background:#2d9b7b;transition:width .2s}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:680px){header{padding:15px}.hero,.panel{padding:15px}.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}.lesson-list{grid-template-columns:1fr}header h1{font-size:22px}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+<header><div class="logo">ن</div><div><h1>نُقطة</h1><p>منظّم المادة — افهمي، رتّبي، وراجعي بطريقتك.</p></div></header>
+<main>
+<section class="hero">
+<div class="topline"><div><h2>أهلًا بيك في نُقطة</h2><p class="muted">نفس المنظومة، ومحتوى مختلف لكل مادة.</p></div><div><label for="subjectSelect" style="margin-top:0">المادة الحالية</label><select id="subjectSelect" class="subjectSelect"><option value="math">الرياضيات</option><option value="custom">مادة جديدة</option></select></div></div>
+<div class="notice">نسخة تجريبية مجانية: بيانات الكتب والتقدم محفوظة على جهازك. ميزات الذكاء الاصطناعي تحتاج نشر الخادم وإضافة مفتاح API مجاني إن كان متاحًا لحسابك.</div>
+</section>
+<nav class="nav" aria-label="أقسام الموقع"><button class="active" data-page="home">الرئيسية</button><button data-page="solve">حل سؤال</button><button data-page="explain">شرح درس</button><button data-page="library">مكتبة المادة</button><button data-page="organize">تنظيم المنهج</button></nav>
+<section class="page" id="home">
+<div class="grid">
+<div class="tile"><div class="num" id="lessonsCount">18</div><h3>درس في قائمة البداية</h3><p>تقدر تعدّل قائمة الدروس أو تضيف مادة جديدة.</p></div>
+<div class="tile"><div class="num" id="booksCount">0</div><h3>مصادر محفوظة</h3><p>ملفات نصية جرى استخراجها على جهازك.</p></div>
+<div class="tile"><div class="num" id="doneCount">0</div><h3>دروس أنجزتها</h3><p>علّم الدرس كمكتمل لمتابعة تقدمك.</p></div>
+</div>
+<div class="panel" style="margin-top:15px"><h2>كمّل من هنا</h2><p class="muted">اختار الدرس اللي بتذاكره أو افتح السؤال اللي واقف معاك.</p><div class="lesson-list" id="homeLessons"></div></div>
+</section>
+<section class="page hidden" id="solve">
+<div class="panel"><h2>حل سؤال</h2><p class="muted">ارفع صورة واضحة أو اكتب السؤال. نُقطة سترسل السؤال ومقتطفات الكتب المطابقة إلى مساعد الذكاء الاصطناعي عبر الخادم.</p>
+<form id="solveForm"><label for="questionFile">صورة السؤال (أو اتركها واكتب السؤال)</label><input id="questionFile" type="file" accept="image/*"><label for="questionText">نص السؤال أو الجزء اللي مش فاهمه</label><textarea id="questionText" placeholder="اكتب السؤال هنا..."></textarea><label for="solveLesson">الدرس المتوقع (اختياري)</label><select id="solveLesson" class="field"></select><button class="primary" type="submit">حل خطوة بخطوة</button><div id="solveStatus" class="status"></div></form>
+</div></section>
+<section class="page hidden" id="explain">
+<div class="panel"><h2>شرح درس</h2><p class="muted">شرح من البداية أو ركّز على جزئية محددة. استخدم محتوى المصادر المحفوظة قدر الإمكان.</p>
+<form id="explainForm"><label for="explainLesson">الدرس</label><select id="explainLesson" class="field" required></select><label for="explainStyle">طريقة الشرح</label><select id="explainStyle" class="field"><option>من البداية وببساطة</option><option>تفصيلي مع مثال</option><option>ملخص القوانين والأفكار</option><option>أخطاء شائعة وطريقة تجنبها</option></select><label for="explainConfusion">إيه الجزء اللي مش مفهوم؟</label><textarea id="explainConfusion" placeholder="اختياري"></textarea><button class="primary" type="submit">اشرح الدرس</button><div id="explainStatus" class="status"></div></form></div>
+</section>
+<section class="page hidden" id="library">
+<div class="panel"><h2>مكتبة المادة</h2><p class="muted">ارفع PDF فيه نص قابل للتحديد. استخراج النص يتم داخل المتصفح؛ الملفات لا تُرفع إلى خادم المكتبة. لو الملف ممسوح ضوئيًا كصور، استخدم صور الصفحات أو نسخة نصية.</p>
+<label for="bookTitle">اسم الكتاب أو المصدر</label><input id="bookTitle" class="field" placeholder="مثال: كتاب المدرسة — الفصل الأول">
+<label for="bookFile">ملف PDF</label><input id="bookFile" type="file" accept="application/pdf,.pdf">
+<button class="primary" id="indexBook" type="button">إضافة للمكتبة</button><div id="bookStatus" class="status"></div>
+<div class="progressbar"><div id="indexProgress"></div></div><div class="small" id="indexHint"></div>
+<h3 style="color:var(--navy)">مصادرك الحالية</h3><div id="sourceList" class="status show">لا توجد مصادر محفوظة بعد.</div><button class="secondary" id="clearLibrary" type="button">مسح مصادر المادة من هذا الجهاز</button>
+</div></section>
+<section class="page hidden" id="organize">
+<div class="panel"><h2>تنظيم المنهج</h2><p class="muted">دي قائمة أولية للفصل الأول في الرياضيات. علّم الدروس اللي خلصتها. وعند إنشاء مادة جديدة، تقدر تغيّر اسمها وتكتب قائمة دروسها.</p>
+<label for="newSubjectName">اسم المادة الجديدة</label><input id="newSubjectName" class="field" placeholder="مثال: العلوم">
+<label for="newLessons">الدروس (كل درس في سطر)</label><textarea id="newLessons" placeholder="الوحدة الأولى&#10;الدرس الأول&#10;الدرس الثاني"></textarea><button class="primary" id="createSubject" type="button">إنشاء/تحديث المادة</button><div id="subjectStatus" class="status"></div>
+<div class="lesson-list" id="allLessons"></div>
+</div></section>
+<footer>نُقطة — مشروع مستقل قابل للتوسع. راجع خطوات الحل ومصادرها قبل الاعتماد عليها.</footer>
+</main>
+<script>
+if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const $=id=>document.getElementById(id);
+const mathLessons=["فك المقادير التكعيبية","تحليل المقادير التكعيبية","نظرية ذات الحدين","نظرية متعددة الحدود","تطبيقات على نظرية ذات الحدين","قسمة كثيرات الحدود","خارج وباقي القسمة","ضرب وقسمة العبارات الكسرية","جمع وطرح العبارات الكسرية","الكسور المركبة","المتطابقات","إثبات المساواة (1)","إثبات المساواة (2)","إثبات المساواة (3)","إثبات المتباينات (1)","إثبات المتباينات (2)","إثبات المتباينات (3)","إثبات المتباينات (4)"];
+const STORE='noqta_v1';
+let state={subject:'math',subjects:{math:{name:'الرياضيات',lessons:mathLessons}},done:{},sources:[]};
+function load(){try{const x=JSON.parse(localStorage.getItem(STORE)||'null');if(x)state={...state,...x}}catch{}}
+function save(){localStorage.setItem(STORE,JSON.stringify(state));renderAll()}
+function lessons(){return state.subjects[state.subject]?.lessons||[]}
+function setStatus(id,msg,error=false){const e=$(id);e.textContent=msg;e.className='status show'+(error?' error':'')}
+function switchPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('hidden',x.id!==id));document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id))}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>switchPage(b.dataset.page));
+$('subjectSelect').onchange=()=>{if($('subjectSelect').value==='custom'){switchPage('organize');$('newSubjectName').focus();$('subjectSelect').value=state.subject} else {state.subject=$('subjectSelect').value;save()}};
+function markKey(name){return state.subject+'::'+name}
+function lessonButton(name){const b=document.createElement('button');b.className='lesson'+(state.done[markKey(name)]?' done':'');b.textContent=(state.done[markKey(name)]?'✓ ':'')+name;b.onclick=()=>{if(confirm('تحديد «'+name+'» كمكتمل/غير مكتمل؟')){state.done[markKey(name)]=!state.done[markKey(name)];save()}};return b}
+function fillSelect(id,empty=true){const s=$(id);s.innerHTML='';if(empty){const o=document.createElement('option');o.value='';o.textContent='اختياري — اختر الدرس';s.appendChild(o)}lessons().forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;s.appendChild(o)})}
+function renderAll(){const sub=state.subjects[state.subject]||{name:'المادة',lessons:[]};$('subjectSelect').innerHTML='';Object.entries(state.subjects).forEach(([k,v])=>{const o=document.createElement('option');o.value=k;o.textContent=v.name;$('subjectSelect').appendChild(o)});const custom=document.createElement('option');custom.value='custom';custom.textContent='مادة جديدة';$('subjectSelect').appendChild(custom);$('subjectSelect').value=state.subject;
+$('lessonsCount').textContent=lessons().length;$('booksCount').textContent=state.sources.filter(x=>x.subject===state.subject).length;$('doneCount').textContent=lessons().filter(x=>state.done[markKey(x)]).length;
+['homeLessons','allLessons'].forEach(id=>{$(id).innerHTML='';lessons().forEach(n=>$(id).appendChild(lessonButton(n)))});
+fillSelect('solveLesson',true);fillSelect('explainLesson',false);renderSources()}
+function renderSources(){const list=$('sourceList');list.innerHTML='';const sources=state.sources.filter(s=>s.subject===state.subject);if(!sources.length){list.textContent='لا توجد مصادر محفوظة للمادة الحالية.';return}sources.forEach(s=>{const d=document.createElement('div');d.style.padding='8px 0';d.style.borderBottom='1px solid var(--line)';d.textContent=`${s.title} — ${s.chunks.length} مقطع نصي`;list.appendChild(d)})}
+function tokenize(s){return (s.toLowerCase().match(/[a-z0-9\u0600-\u06ff]+/g)||[]).filter(w=>w.length>1)}
+function makeChunks(text,meta){const clean=text.replace(/\s+/g,' ').trim();const out=[];const size=1000,overlap=140;for(let i=0;i<clean.length;i+=size-overlap){const part=clean.slice(i,i+size);if(part.trim())out.push({text:part,page:meta.page,book:meta.book,subject:state.subject});if(i+size>=clean.length)break}return out}
+function retrieve(query,limit=7){const q=new Set(tokenize(query));if(!q.size)return [];const pool=state.sources.filter(s=>s.subject===state.subject).flatMap(s=>s.chunks);return pool.map(c=>{const t=new Set(tokenize(c.text));let score=0;for(const w of q)if(t.has(w))score++;return {c,score:score/Math.sqrt(q.size)}}).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,limit).map(x=>x.c)}
+$('indexBook').onclick=async()=>{const f=$('bookFile').files[0];if(!f){setStatus('bookStatus','اختار ملف PDF الأول.',true);return}if(!window.pdfjsLib){setStatus('bookStatus','مكتبة قراءة PDF لم تُحمّل. اتصل بالإنترنت ثم أعد المحاولة.',true);return}if(f.size>180*1024*1024){setStatus('bookStatus','الملف كبير جدًا للجهاز. جرّب رفع فصل واحد بدل الكتاب كله.',true);return}
+const title=$('bookTitle').value.trim()||f.name;const btn=$('indexBook');btn.disabled=true;$('indexProgress').style.width='0%';setStatus('bookStatus','جاري قراءة صفحات الكتاب على جهازك...');let chunks=[],totalText=0;
+try{const bytes=await f.arrayBuffer();const pdf=await pdfjsLib.getDocument({data:bytes}).promise;for(let p=1;p<=pdf.numPages;p++){const page=await pdf.getPage(p);const tc=await page.getTextContent();const text=tc.items.map(x=>x.str).join(' ');totalText+=text.length;if(text.trim())chunks.push(...makeChunks(text,{page:p,book:title}));if(p%5===0||p===pdf.numPages){$('indexProgress').style.width=Math.round(p/pdf.numPages*100)+'%';$('indexHint').textContent=`تمت قراءة ${p} من ${pdf.numPages} صفحة`}}
+if(totalText<150){setStatus('bookStatus','الملف لا يحتوي على نص قابل للاستخراج غالبًا لأنه ممسوح ضوئيًا كصور. جرّب نسخة نصية أو أضف صور صفحات محددة في سؤال الحل.',true);return}
+if(chunks.length>1800){setStatus('bookStatus','النص المستخرج كبير جدًا للحفظ المحلي في هذه النسخة. جرّب فصلًا واحدًا أو ملفًا أصغر حتى لا تمتلئ مساحة المتصفح.',true);return}
+state.sources=state.sources.filter(s=>!(s.subject===state.subject&&s.title===title));state.sources.push({subject:state.subject,title,chunks});save();setStatus('bookStatus',`تمت إضافة «${title}» بنجاح.\nصفحات الكتاب: ${pdf.numPages}\nمقاطع النص: ${chunks.length}\nالملف لم يُرفع إلى الخادم؛ الفهرسة محلية على هذا الجهاز.`)
+}catch(e){setStatus('bookStatus','تعذر قراءة PDF: '+e.message,true)}finally{btn.disabled=false}}
+$('clearLibrary').onclick=()=>{if(confirm('مسح كل مصادر المادة الحالية من هذا الجهاز؟')){state.sources=state.sources.filter(s=>s.subject!==state.subject);save();setStatus('bookStatus','تم مسح مصادر المادة الحالية.')}} 
+$('createSubject').onclick=()=>{const name=$('newSubjectName').value.trim();const ls=$('newLessons').value.split('\n').map(x=>x.trim()).filter(Boolean);if(!name||!ls.length){setStatus('subjectStatus','اكتب اسم المادة ودرسًا واحدًا على الأقل.',true);return}const key='s_'+name.toLowerCase().replace(/\s+/g,'_').slice(0,30);state.subjects[key]={name,lessons:ls};state.subject=key;save();setStatus('subjectStatus',`تم إنشاء «${name}» بقائمة من ${ls.length} درس. يمكنك الآن رفع مصادرها.`)}
+async function askAI(mode,details,file,statusId,button){button.disabled=true;setStatus(statusId,'جاري تجهيز السؤال وإرساله إلى خدمة الذكاء الاصطناعي...');try{const query=details.query||details.lesson||'';const chunks=retrieve(query,7);const contexts=chunks.map(c=>`[${c.book}، صفحة ${c.page}]\n${c.text}`);let image=null;if(file){if(!file.type.startsWith('image/'))throw Error('في هذه النسخة ارفع صورة للسؤال؛ ملفات PDF للكتاب تُفهرس من مكتبة المادة.');if(file.size>10*1024*1024)throw Error('حجم الصورة أكبر من 10 ميجابايت.');image=await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result.split(',')[1]);r.onerror=reject;r.readAsDataURL(file)})}
+const r=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,subject:(state.subjects[state.subject]||{}).name||'المادة',details,contexts,image,mimeType:file?.type||null})});let d={};try{d=await r.json()}catch{}if(!r.ok)throw Error(d.error||'تعذر الاتصال بالخادم');const box=$(statusId);box.innerHTML='';const ans=document.createElement('div');ans.className='answer';ans.textContent=d.answer||'لم يصل رد.';box.appendChild(ans);const src=document.createElement('div');src.className='sources';src.textContent=chunks.length?'مقاطع استخدمت للبحث: '+[...new Set(chunks.map(c=>`${c.book} — صفحة ${c.page}`))].join('؛ '):'لم يتم العثور على مقاطع من مصادر محفوظة؛ الإجابة قد تعتمد على المعرفة العامة للنموذج.';box.appendChild(src);box.className='status show'
+}catch(e){setStatus(statusId,e.message+'\\n\\nإذا لم يتم نشر الموقع وربط مفتاح API بالخادم، فلن تعمل ميزة الذكاء الاصطناعي بعد.',true)}finally{button.disabled=false}}
+$('solveForm').onsubmit=e=>{e.preventDefault();askAI('solve',{query:$('questionText').value+' '+$('solveLesson').value,question:$('questionText').value,lesson:$('solveLesson').value},$('questionFile').files[0], 'solveStatus',e.currentTarget.querySelector('button'))};
+$('explainForm').onsubmit=e=>{e.preventDefault();askAI('explain',{query:$('explainLesson').value+' '+$('explainConfusion').value,lesson:$('explainLesson').value,style:$('explainStyle').value,confusion:$('explainConfusion').value},null,'explainStatus',e.currentTarget.querySelector('button'))};
+load();renderAll();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('/sw.js').catch(()=>{});
+</script>
+</body></html>

@@ -1,0 +1,12 @@
+{
+  "name": "نُقطة — منظّم المادة",
+  "short_name": "نُقطة",
+  "description": "منظّم للمناهج والدروس ومساعد لفهم الأسئلة.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f9fd",
+  "theme_color": "#1769aa",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": []
+}
